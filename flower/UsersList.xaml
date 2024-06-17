@@ -1,0 +1,31 @@
+﻿<Window x:Class="flower.UsersList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:flower"
+        mc:Ignorable="d"
+        Title="Список сотрудников" Height="500" Width="800">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="Список сотрудников" FontWeight="Bold" FontSize="20" Margin="0 0 20 20"/>
+
+            <ListBox x:Name="EmployeesListBox" SelectionMode="Single" Height="300" Width="600" HorizontalAlignment="Center">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding surname}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding name}"/>
+                            <TextBlock Text="{Binding patrynumic}"/>
+                            <TextBlock Text="{Binding division.name}" FontStyle="Italic"/>
+                            <TextBlock Text="{Binding phone}"/>
+                            <TextBlock Text="{Binding email}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Button Content="Назад" Click="BackButton_Click" Width="100" Margin="0 20 0 0"/>
+        </StackPanel>
+    </Grid>
+</Window>

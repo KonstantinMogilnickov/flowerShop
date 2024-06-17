@@ -1,0 +1,16 @@
+﻿<Window x:Class="flower.AdminPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:flower"
+        mc:Ignorable="d"
+        Title="AdminPage" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="Панель администратора" FontWeight="Bold" FontSize="20" Margin="0 0 20 20"/>
+            <Button Content="Список сотрудников" Click="EmployeesListButton_Click" Width="200" Height="40" Margin="271,0,281,10"/>
+            <Button Content="График входов" Click="LoginGraphButton_Click" Width="200" Height="40" Margin="276,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

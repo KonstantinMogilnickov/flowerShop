@@ -1,0 +1,33 @@
+﻿<Window x:Class="flower.LoginGraphPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:flower"
+        mc:Ignorable="d"
+        Title="LoginGraphPage" Height="500" Width="800">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="График входов в систему" FontWeight="Bold" FontSize="20" Margin="0 0 20 20"/>
+
+            <ComboBox x:Name="EmployeeFilterComboBox" Width="200" Margin="0 0 20 0" SelectionChanged="EmployeeFilterComboBox_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding surname}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <DataGrid x:Name="LoginDataGrid" AutoGenerateColumns="False" Height="300" Width="700" HorizontalAlignment="Center">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Фамилия" Binding="{Binding User.surname}" Width="*"/>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding User.name}" Width="*"/>
+                    <DataGridTextColumn Header="Отчество" Binding="{Binding User.patrynumic}" Width="*"/>
+                    <DataGridTextColumn Header="Время входа" Binding="{Binding date}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Content="Назад" Click="BackButton_Click" Width="100" Margin="0 20 0 0"/>
+        </StackPanel>
+    </Grid>
+</Window>

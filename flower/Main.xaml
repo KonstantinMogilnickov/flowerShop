@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:flower"
         mc:Ignorable="d"
-        Title="Главное окно" Height="900" Width="400">
+        Title="Цветучено" Height="846" Width="800">
     <Grid>
-        <StackPanel Margin="20">
+        <Image Source="/Source/rose.png" Grid.Column="0" Stretch="Fill" />
+        <StackPanel Margin="358,10,10,10">
             <TextBlock Text="Фамилия" FontSize="14" Margin="0,5,0,2" />
             <TextBox x:Name="LastNameTextBox" Margin="0,0,0,10" Padding="5" FontSize="14" />
 
@@ -38,8 +39,9 @@
             <TextBlock Text="Подтвердите пароль" FontSize="14" Margin="0,5,0,2" />
             <PasswordBox x:Name="ConfirmPasswordBox" Margin="0,0,0,10" Padding="5" FontSize="14" />
 
-            <Button Content="Зарегистрироваться" Click="RegisterButton_Click" Margin="0,10,0,0" Padding="10" FontSize="14" Background="LightBlue" />
+            <Button Content="Зарегистрироваться" Click="RegisterButton_Click" Margin="0,10,0,0" Padding="10" FontSize="14" Background="#4CAF50" BorderBrush="#4CAF50"/>
         </StackPanel>
+        <Label Content="РЕГИСТРАЦИЯ" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.237,-0.308" FontWeight="Bold" FontSize="40"/>
 
     </Grid>
 </Window>

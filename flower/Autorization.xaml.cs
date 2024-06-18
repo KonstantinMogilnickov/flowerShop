@@ -43,6 +43,13 @@ namespace flower
                     this.Close();
                 }
 
+                if (user.id_role == 1)
+                {
+                    EmployeeMainWindow employeeMainWindow = new EmployeeMainWindow();
+                    employeeMainWindow.Show();
+                    this.Close();
+                }
+
                 Session session = new Session()
                 {
                     id_user = user.id,
@@ -65,5 +72,12 @@ namespace flower
                 return Convert.ToBase64String(bytes);
             }
         }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            Main main = new Main();
+            main.Show();
+            this.Close();
+;        }
     }
 }

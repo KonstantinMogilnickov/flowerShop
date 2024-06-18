@@ -1,0 +1,83 @@
+﻿<Window x:Class="flower.ClientRegistration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:flower"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="ClientRegistration" Height="750" Width="800">
+    <Grid>
+        <Image Source="/Source/rose.png" Grid.Column="0" Stretch="Fill" />
+        <Grid Margin="447,0,10,10">
+            <StackPanel>
+                <Label Content="Фамилия" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtSurname" TextWrapping="Wrap" FontSize="13" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,40">
+                <Label Content="Имя" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtName" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,80">
+                <Label Content="Отчество" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtPatronymic" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+
+            
+            <StackPanel VerticalAlignment="Top" Margin="0,120">
+                <Label Content="Телефон" FontSize="10" HorizontalAlignment="Center"/>
+
+                <xctk:MaskedTextBox x:Name="txtPhone" 
+                            Mask="+7(000) 000-0000"
+                            ValueDataType="{x:Type s:String}"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,160">
+                <Label Content="E-mail" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtEmail" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,200">
+                <Label Content="Улица" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtStreet" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,243,0,0">
+                <Label Content="Дом" FontSize="10" HorizontalAlignment="Center" />
+                <TextBox x:Name="txtHome" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,286,0,0">
+                <Label Content="Квартира" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtFlat" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,329,0,0">
+                <Label Content="Подъезд" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtEntrance" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,365,0,0">
+                <Label Content="Этаж" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtFloor" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,412,0,0">
+                <Label Content="Логин" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtLogin" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,459,0,0">
+                <Label Content="Пароль" FontSize="10" HorizontalAlignment="Center"/>
+                <TextBox x:Name="txtPassword" TextWrapping="Wrap"  FontSize="13"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,510,0,0">
+                <Label Content="Введите дату рождения"  FontSize="10" Foreground="Black"/>
+                <DatePicker x:Name="dpDateOfBirth" FontSize="13" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Margin="0,563,0,0">
+                <Label Content="Выберите пол" FontSize="10" Foreground="Black"/>
+                <RadioButton x:Name="rbMan" Content="Муж" FontSize="13" Foreground="Black"/>
+                <RadioButton x:Name="rbWoman" Content="Жен" FontSize="13" Foreground="Black"/>
+            </StackPanel>
+            <Button x:Name="btnRegistration" Content="Регистрация" HorizontalAlignment="Center" Margin="0,623,144,0" VerticalAlignment="Top" Width="191"  Background="#4CAF50" Foreground="White" BorderBrush="#4CAF50"  Height="40" Click="btnRegistration_Click"/>
+            <Button x:Name="btnBack" Content="Назад" HorizontalAlignment="Center" Margin="196,623,10,0" VerticalAlignment="Top" Width="129"  Background="#4CAF50" Foreground="White" BorderBrush="#4CAF50"  Height="40" Click="btnBack_Click" />
+        </Grid>
+        <TextBlock Text="РЕГИСТРАЦИЯ КЛИЕНТА" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.237,-0.308" FontWeight="Bold" FontSize="40" Width="432"/>
+
+
+    </Grid>
+</Window>

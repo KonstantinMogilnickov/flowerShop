@@ -1,0 +1,17 @@
+﻿<Window x:Class="flower.EmployeeMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:flower"
+        mc:Ignorable="d"
+        Title="Цветучено" Height="450" Width="800">
+    <Grid Background="#f0f0f0">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+            <TextBlock Text="Добро пожаловать" FontSize="24" FontWeight="Bold" Foreground="#333333" HorizontalAlignment="Center" Margin="0,0,0,20" />
+
+            <Button x:Name="btnRegisterClient" Content="Регистрация клиента" Width="200" Height="40" Margin="0,10" Background="#4CAF50" Foreground="White" BorderBrush="#4CAF50" Click="btnRegisterClient_Click" />
+            <Button Content="Личный кабинет" Width="200" Height="40" Margin="0,10" Background="#2196F3" Foreground="White" BorderBrush="#2196F3"/>
+        </StackPanel>
+    </Grid>
+</Window>

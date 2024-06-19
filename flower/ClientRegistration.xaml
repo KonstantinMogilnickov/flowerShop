@@ -62,7 +62,7 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Top" Margin="0,459,0,0">
                 <Label Content="Пароль" FontSize="10" HorizontalAlignment="Center"/>
-                <TextBox x:Name="txtPassword" TextWrapping="Wrap"  FontSize="13"/>
+                <PasswordBox x:Name="txtPassword"  FontSize="13"/>
             </StackPanel>
             <StackPanel VerticalAlignment="Top" Margin="0,510,0,0">
                 <Label Content="Введите дату рождения"  FontSize="10" Foreground="Black"/>

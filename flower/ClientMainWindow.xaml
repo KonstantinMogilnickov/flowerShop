@@ -1,0 +1,56 @@
+﻿<Window x:Class="flower.ClientMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:flower"
+        mc:Ignorable="d"
+        Title="ClientMainWindow" Height="450" Width="800">
+
+        <Grid Background="#FFFFFF">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Width="232">
+                <Button Style="{StaticResource SocialButtonStyle}" Content="VK" Click="OpenVK"/>
+                <Button Style="{StaticResource SocialButtonStyle}" Content="Instagram" Click="OpenInstagram" Width="83"/>
+                <Button Style="{StaticResource SocialButtonStyle}" Content="Telegram" Click="OpenTelegram" Width="77"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="0" Text="ЦВЕТУЧЕНО" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
+
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Border Style="{StaticResource CategoryBorderStyle}" MouseEnter="Category_MouseEnter" MouseLeave="Category_MouseLeave" MouseUp="FreshFlowers_Click">
+                        <StackPanel>
+                            <Image Source="Source/image1.png" Width="200" Height="200"/>
+                            <TextBlock Text="Свежесрезанные цветы" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CategoryBorderStyle}" MouseEnter="Category_MouseEnter" MouseLeave="Category_MouseLeave" MouseUp="Bouquets_Click">
+                        <StackPanel>
+                            <Image Source="Source/image2.png" Width="200" Height="200"/>
+                            <TextBlock Text="Цветочные букеты" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CategoryBorderStyle}" MouseEnter="Category_MouseEnter" MouseLeave="Category_MouseLeave" MouseUp="IndoorPlants_Click">
+                        <StackPanel>
+                            <Image Source="Source/image3.png" Width="200" Height="200"/>
+                            <TextBlock Text="Комнатные цветы" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CategoryBorderStyle}" MouseEnter="Category_MouseEnter" MouseLeave="Category_MouseLeave" MouseUp="Seedlings_Click">
+                        <StackPanel>
+                            <Image Source="Source/image4.png" Width="200" Height="200"/>
+                            <TextBlock Text="Рассада" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Button Grid.Row="2" Content="Корзина (0)" Click="CartButton_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"/>
+        </Grid>
+</Window>

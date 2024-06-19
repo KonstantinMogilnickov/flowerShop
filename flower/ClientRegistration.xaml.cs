@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,7 +39,7 @@ namespace flower
             {
                 gender = "Ж";
             }
-            if (ValidateField())
+            if (ValidateInputs())
             {
                 client client = new client()
                 {
@@ -52,7 +54,9 @@ namespace flower
                     entrance = txtEntrance.Text.Trim(),
                     floor = txtFloor.Text.Trim(),
                     date_of_birth = dpDateOfBirth.SelectedDate,
-                    gender = gender
+                    gender = gender,
+                    login = txtLogin.Text,
+                    passwordHash = HashPassword(txtPassword.Password)
 
                 };
                 db.clients.Add(client);
@@ -60,34 +64,10 @@ namespace flower
 
 
                 MessageBox.Show("Регистрация успешна!");
-
-                // Добавьте логику для сохранения данных в базу данных или другую необходимую логику
+                EmployeeMainWindow employeeMainWindow = new EmployeeMainWindow();
+                employeeMainWindow.Show();
+                Close();
             }
-        }
-
-        private bool ValidateField()
-        {
-            string userName = txtName.Text.Trim();
-            string userSurname = txtSurname.Text.Trim();
-            string userPatronymic = txtPatronymic.Text.Trim();
-            string userPhone = txtPhone.Text.Trim();
-            string userEmail = txtEmail.Text.Trim();
-            string userLogin = txtLogin.Text.Trim();
-
-            string userPassword = txtPassword.Text.Trim(); 
-
-            if (string.IsNullOrEmpty(userName) ||
-                string.IsNullOrEmpty(userSurname) ||
-                string.IsNullOrEmpty(userPatronymic) ||
-                string.IsNullOrEmpty(userPhone) ||
-                string.IsNullOrEmpty(userEmail) ||
-                string.IsNullOrEmpty(userLogin) ||
-                string.IsNullOrEmpty(userPassword))
-            {
-                MessageBox.Show("Пожалуйста, заполните все поля.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            return true;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -96,5 +76,61 @@ namespace flower
             employeeMainWindow.Show();
             this.Close();
         }
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(txtName.Text) ||
+                string.IsNullOrWhiteSpace(txtSurname.Text) ||
+                string.IsNullOrWhiteSpace(txtPatronymic.Text) ||
+                string.IsNullOrWhiteSpace(txtPhone.Text) ||
+                string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                string.IsNullOrWhiteSpace(txtStreet.Text) ||
+                string.IsNullOrWhiteSpace(txtHome.Text) ||
+                string.IsNullOrWhiteSpace(txtFlat.Text) ||
+                string.IsNullOrWhiteSpace(txtEntrance.Text)||
+                string.IsNullOrWhiteSpace(txtFloor.Text) ||
+                string.IsNullOrWhiteSpace(txtLogin.Text) ||
+                string.IsNullOrWhiteSpace(txtPassword.Password) ||
+                string.IsNullOrWhiteSpace(dpDateOfBirth.Text)
+                )
+            {
+                MessageBox.Show("Все поля обязательны для заполнения.");
+                return false;
+            }
+
+            if (!Regex.IsMatch(txtEmail.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                MessageBox.Show("Некорректный формат email.");
+                return false;
+            }
+
+            if (!ValidatePassword(txtPassword.Password))
+            {
+                MessageBox.Show("Пароль должен быть не менее 6 символов и содержать цифру.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidatePassword(string password)
+        {
+            if (password.Length < 6)
+                return false;
+
+            if (!password.Any(char.IsDigit))
+                return false;
+
+            return true;
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(bytes);
+            }
+        }
+
     }
 }

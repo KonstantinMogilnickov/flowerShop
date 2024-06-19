@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:flower"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Properties/Dictionary1.xaml"/>
     </Application.Resources>
 </Application>

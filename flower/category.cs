@@ -12,22 +12,9 @@ namespace flower
     using System;
     using System.Collections.Generic;
     
-    public partial class client
+    public partial class category
     {
         public int id { get; set; }
-        public string surname { get; set; }
         public string name { get; set; }
-        public string patronymic { get; set; }
-        public string phone { get; set; }
-        public string email { get; set; }
-        public string street { get; set; }
-        public string home { get; set; }
-        public string flat { get; set; }
-        public string entrance { get; set; }
-        public string floor { get; set; }
-        public Nullable<System.DateTime> date_of_birth { get; set; }
-        public string gender { get; set; }
-        public string login { get; set; }
-        public string passwordHash { get; set; }
     }
 }

@@ -13,7 +13,9 @@
         <AssociationConnector Association="shopModel.FK_Users_role" ManuallyRouted="false" />
         <EntityTypeShape EntityType="shopModel.Session" Width="1.5" PointX="5.375" PointY="3.75" />
         <AssociationConnector Association="shopModel.FK_Session_Users" />
-        <EntityTypeShape EntityType="shopModel.client" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="shopModel.client" Width="1.5" PointX="5.375" PointY="6.25" />
+        <EntityTypeShape EntityType="shopModel.product" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="shopModel.category" Width="1.5" PointX="7.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

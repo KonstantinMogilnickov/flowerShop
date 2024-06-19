@@ -32,7 +32,7 @@ namespace flower
             string password = HashPassword(PasswordBox.Password);
 
             var user = db.Users.FirstOrDefault(u => u.login == login && u.password == password);
-
+            var client = db.clients.FirstOrDefault(c => c.login == login && c.passwordHash == password);
             if (user != null)
             {
                 MessageBox.Show("Авторизация успешна!");
@@ -50,6 +50,8 @@ namespace flower
                     this.Close();
                 }
 
+                
+
                 Session session = new Session()
                 {
                     id_user = user.id,
@@ -60,6 +62,12 @@ namespace flower
             }
             else
             {
+                if (client != null)
+                {
+                    ClientMainWindow clientMainWindow = new ClientMainWindow();
+                    clientMainWindow.Show();
+                    this.Close();
+                }
                 MessageBox.Show("Неверный логин или пароль.");
             }
         }

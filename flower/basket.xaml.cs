@@ -1,22 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace flower
 {
-    public partial class Cart : Window
+    /// <summary>
+    /// Логика взаимодействия для basket.xaml
+    /// </summary>
+    public partial class basket : Window
     {
         private List<CartItem> cartItems = new List<CartItem>();
-
-        public Cart(List<CartItem> items)
+        private client currentUser;
+        public basket(List<CartItem> items, client client)
         {
             InitializeComponent();
             cartItems = items;
+            this.currentUser = client;
             LoadCartItems();
+            UpdateCartTotal();
+            LoadCartFromDatabase();
         }
 
         private void LoadCartItems()
@@ -39,9 +52,9 @@ namespace flower
                 Stretch = Stretch.Uniform
             };
 
-            if (!string.IsNullOrEmpty(item.Product.ImagePath) && Uri.IsWellFormedUriString(item.Product.ImagePath, UriKind.RelativeOrAbsolute))
+            if (!string.IsNullOrEmpty(item.Product.imagepath) && Uri.IsWellFormedUriString(item.Product.imagepath, UriKind.RelativeOrAbsolute))
             {
-                image.Source = new BitmapImage(new Uri(item.Product.ImagePath, UriKind.RelativeOrAbsolute));
+                image.Source = new BitmapImage(new Uri(item.Product.imagepath, UriKind.RelativeOrAbsolute));
             }
             else
             {
@@ -50,27 +63,27 @@ namespace flower
 
             var priceText = new TextBlock
             {
-                Text = $"{item.Product.Price} рублей",
+                Text = $"{item.Product.price} рублей",
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
             var nameText = new TextBlock
             {
-                Text = item.Product.Name,
+                Text = item.Product.name,
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            var decreaseButton = new Button { Content = "-", Tag = item.Product.Id };
+            var decreaseButton = new Button { Content = "-", Tag = item.Product.id };
             decreaseButton.Click += DecreaseQuantity_Click;
 
-            var increaseButton = new Button { Content = "+", Tag = item.Product.Id };
+            var increaseButton = new Button { Content = "+", Tag = item.Product.id };
             increaseButton.Click += IncreaseQuantity_Click;
 
             var quantityTextBox = new TextBox
             {
                 Width = 30,
                 Text = item.Quantity.ToString(),
-                Tag = item.Product.Id
+                Tag = item.Product.id
             };
             quantityTextBox.PreviewTextInput += QuantityTextBox_PreviewTextInput;
             quantityTextBox.TextChanged += QuantityTextBox_TextChanged;
@@ -82,16 +95,9 @@ namespace flower
                 Children = { decreaseButton, quantityTextBox, increaseButton }
             };
 
-            var addToCartButton = new Button
-            {
-                Content = "В корзину",
-                Tag = item.Product.Id,
-                IsEnabled = false
-            };
-
             var productPanel = new StackPanel
             {
-                Children = { image, priceText, nameText, buttonPanel, addToCartButton }
+                Children = { image, priceText, nameText, buttonPanel }
             };
 
             var border = new Border
@@ -106,6 +112,7 @@ namespace flower
 
             return border;
         }
+
 
         private void DecreaseQuantity_Click(object sender, RoutedEventArgs e)
         {
@@ -124,10 +131,15 @@ namespace flower
                     var result = MessageBox.Show("Удалить товар из корзины?", "Подтверждение", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
-                        var itemToRemove = cartItems.FirstOrDefault(i => i.Product.Id == productId);
+                        var itemToRemove = cartItems.FirstOrDefault(i => i.Product.id == productId);
                         cartItems.Remove(itemToRemove);
                         LoadCartItems();
+                        UpdateCartTotal();
                     }
+                }
+                else
+                {
+                    UpdateCartTotal();
                 }
             }
         }
@@ -141,6 +153,7 @@ namespace flower
 
             quantity++;
             textBox.Text = quantity.ToString();
+            UpdateCartTotal();
         }
 
         private TextBox FindQuantityTextBox(int productId)
@@ -175,31 +188,31 @@ namespace flower
 
         private void UpdateCartTotal()
         {
-            decimal total = cartItems.Sum(i => i.products.price * i.Quantity);
+            decimal total = (decimal)cartItems.Sum(i => i.Product.price * i.Quantity);
             CheckoutButton.Content = $"Оформить ({total} рублей)";
         }
 
-        private void VK_Click(object sender, MouseButtonEventArgs e)
+        private void OpenVK(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = "https://vk.com/syrprizko",
                 UseShellExecute = true
             });
         }
 
-        private void Instagram_Click(object sender, MouseButtonEventArgs e)
+        private void OpenInstagram(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = "https://www.instagram.com/teddyflowers_perm/",
                 UseShellExecute = true
             });
         }
 
-        private void Telegram_Click(object sender, MouseButtonEventArgs e)
+        private void OpenTelegram(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = "https://web.telegram.org/",
                 UseShellExecute = true
@@ -208,7 +221,7 @@ namespace flower
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
+            ClientMainWindow mainWindow = new ClientMainWindow(currentUser);
             mainWindow.Show();
             this.Close();
         }
@@ -217,25 +230,40 @@ namespace flower
         {
             // Navigate to checkout page
         }
-        private void OpenVK(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://vk.com/syrprizko");
-        }
 
-        private void OpenInstagram(object sender, RoutedEventArgs e)
+        private void LoadCartFromDatabase()
         {
-            System.Diagnostics.Process.Start("https://www.instagram.com/teddyflowers_perm/");
-        }
+            if (currentUser == null)
+            {
+                throw new InvalidOperationException("Текущий пользователь не установлен.");
+            }
 
-        private void OpenTelegram(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://web.telegram.org/");
-        }
-    }
+            using (var db = new shopEntities())
+            {
+                var cartItemsFromDb = db.carts
+                    .Where(c => c.id_user == currentUser.id)
+                    .Select(c => new
+                    {
+                        c.quantity,
+                        c.product
+                    }).ToList();
 
-    public class CartItem
-    {
-        public product Product { get; set; }
-        public int Quantity { get; set; }
+                cartItems.Clear();
+
+                foreach (var item in cartItemsFromDb)
+                {
+                    var cartItem = new CartItem
+                    {
+                        Product = item.product,
+                        Quantity = (int)item.quantity
+                    };
+                    cartItems.Add(cartItem);
+                }
+            }
+
+            LoadCartItems();
+            UpdateCartTotal();
+        }
     }
 }
+

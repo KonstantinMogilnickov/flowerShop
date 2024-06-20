@@ -12,22 +12,15 @@ namespace flower
     using System;
     using System.Collections.Generic;
     
-    public partial class product
+    public partial class cart
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public product()
-        {
-            this.carts = new HashSet<cart>();
-        }
-    
         public int id { get; set; }
-        public Nullable<int> price { get; set; }
-        public string name { get; set; }
-        public string imagepath { get; set; }
-        public Nullable<int> id_category { get; set; }
+        public Nullable<int> id_user { get; set; }
+        public Nullable<int> id_product { get; set; }
+        public Nullable<int> amount { get; set; }
+        public Nullable<int> quantity { get; set; }
     
-        public virtual category category { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<cart> carts { get; set; }
+        public virtual client client { get; set; }
+        public virtual product product { get; set; }
     }
 }

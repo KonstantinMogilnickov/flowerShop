@@ -14,6 +14,12 @@ namespace flower
     
     public partial class client
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public client()
+        {
+            this.carts = new HashSet<cart>();
+        }
+    
         public int id { get; set; }
         public string surname { get; set; }
         public string name { get; set; }
@@ -29,5 +35,8 @@ namespace flower
         public string gender { get; set; }
         public string login { get; set; }
         public string passwordHash { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cart> carts { get; set; }
     }
 }

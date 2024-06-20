@@ -17,14 +17,22 @@ namespace flower
     /// <summary>
     /// Логика взаимодействия для Products.xaml
     /// </summary>
+    public class CartItem
+    {
+        public product Product { get; set; }
+        public int Quantity { get; set; }
+    }
     public partial class Products : Window
     {
+        private List<CartItem> cartItems = new List<CartItem>();
         private shopEntities db = new shopEntities();
+        private client currentUser;
         private int category;
-        public Products(int category)
+        public Products(int category, client client)
         {
             InitializeComponent();
             this.category = category;
+            this.currentUser = client;
             LoadProducts();
         }
 
@@ -168,9 +176,21 @@ namespace flower
         {
             var button = sender as Button;
             var productId = (int)button.Tag;
-            button.IsEnabled = false;
+            var textBox = FindQuantityTextBox(productId);
+            int quantity = int.Parse(textBox.Text);
 
-            // Добавьте продукт в корзину
+            if (quantity > 0)
+            {
+                var product = db.products.FirstOrDefault(p => p.id == productId);
+                AddToCart(product, quantity);
+                var cartItem = new CartItem { Product = product, Quantity = quantity };
+                button.IsEnabled = false;
+                SaveCartItemToDatabase(cartItem);
+            }
+            else
+            {
+                MessageBox.Show("Выберите количество товара для добавления в корзину.");
+            }
         }
 
 
@@ -191,14 +211,86 @@ namespace flower
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            ClientMainWindow clientMainWindow = new ClientMainWindow();
+            ClientMainWindow clientMainWindow = new ClientMainWindow(currentUser);
             clientMainWindow.Show();
             this.Close();
         }
 
         private void CartButton_Click(object sender, RoutedEventArgs e)
         {
-            // Implement navigation to the cart page
+            basket cartWindow = new basket(cartItems, currentUser);
+            cartWindow.Show();
+            this.Close();
+        }
+
+        private void AddToCart(product product, int quantity)
+        {
+            var existingItem = cartItems.FirstOrDefault(item => item.Product.id == product.id);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity;
+            }
+            else
+            {
+                cartItems.Add(new CartItem { Product = product, Quantity = quantity });
+       
+            }
+
+            // Обновляем корзину, если необходимо
+            UpdateCartTotal();
+        }
+        private void UpdateCartTotal()
+        {
+      
+            decimal total = (decimal)cartItems.Sum(item => item.Product.price * item.Quantity);
+           
+        }
+
+        private void SaveCartItemToDatabase(CartItem cartItem)
+        {
+            // Проверка, что все необходимые объекты не равны null
+            if (cartItem == null)
+            {
+                throw new ArgumentNullException(nameof(cartItem));
+            }
+
+            if (cartItem.Product == null)
+            {
+                throw new ArgumentNullException(nameof(cartItem.Product));
+            }
+
+            if (currentUser == null)
+            {
+                throw new InvalidOperationException("Текущий пользователь не установлен.");
+            }
+
+            if (db == null)
+            {
+                throw new InvalidOperationException("Контекст базы данных не инициализирован.");
+            }
+
+            var existingCartItem = db.carts.FirstOrDefault(ci => ci.id_product == cartItem.Product.id && ci.id_user == currentUser.id);
+
+            if (existingCartItem != null)
+            {
+                // Обновляем количество и сумму существующего элемента в корзине
+                existingCartItem.quantity += cartItem.Quantity;
+                existingCartItem.amount = (int)(existingCartItem.quantity * cartItem.Product.price);
+            }
+            else
+            {
+                int summ = (int)(cartItem.Product.price * cartItem.Quantity);
+                // Добавляем новый элемент в корзину
+                cart basket = db.carts.Add(new cart
+                {
+                    id_product = cartItem.Product.id,
+                    id_user = currentUser.id, // Предположим, что у вас есть текущий пользователь
+                    quantity = cartItem.Quantity,
+                    amount = summ
+                });
+            }
+
+            db.SaveChanges();
         }
     }
 }

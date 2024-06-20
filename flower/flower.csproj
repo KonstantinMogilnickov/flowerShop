@@ -85,8 +85,11 @@
     <Compile Include="Autorization.xaml.cs">
       <DependentUpon>Autorization.xaml</DependentUpon>
     </Compile>
-    <Compile Include="cart.xaml.cs">
-      <DependentUpon>cart.xaml</DependentUpon>
+    <Compile Include="basket.xaml.cs">
+      <DependentUpon>basket.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="cart.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -152,7 +155,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="cart.xaml">
+    <Page Include="basket.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

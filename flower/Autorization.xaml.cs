@@ -64,7 +64,7 @@ namespace flower
             {
                 if (client != null)
                 {
-                    ClientMainWindow clientMainWindow = new ClientMainWindow();
+                    ClientMainWindow clientMainWindow = new ClientMainWindow(client);
                     clientMainWindow.Show();
                     this.Close();
                 }

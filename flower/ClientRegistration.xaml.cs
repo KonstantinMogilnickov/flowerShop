@@ -103,11 +103,11 @@ namespace flower
                 return false;
             }
 
-            if (!ValidatePassword(txtPassword.Password))
-            {
-                MessageBox.Show("Пароль должен быть не менее 6 символов и содержать цифру.");
-                return false;
-            }
+            //if (!ValidatePassword(txtPassword.Password))
+            //{
+            //    MessageBox.Show("Пароль должен быть не менее 6 символов и содержать цифру.");
+            //    return false;
+            //}
 
             return true;
         }

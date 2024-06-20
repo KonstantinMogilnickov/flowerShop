@@ -35,6 +35,7 @@ namespace flower
         public virtual DbSet<client> clients { get; set; }
         public virtual DbSet<product> products { get; set; }
         public virtual DbSet<category> categories { get; set; }
+        public virtual DbSet<cart> carts { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

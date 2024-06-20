@@ -18,11 +18,14 @@ namespace flower
     /// <summary>
     /// Логика взаимодействия для ClientMainWindow.xaml
     /// </summary>
+   
     public partial class ClientMainWindow : Window
     {
-        public ClientMainWindow()
+        private client currentUser;
+        public ClientMainWindow(client client)
         {
             InitializeComponent();
+            this.currentUser = client;
         }
 
         private void OpenVK(object sender, RoutedEventArgs e)
@@ -54,35 +57,35 @@ namespace flower
 
         private void FreshFlowers_Click(object sender, MouseButtonEventArgs e)
         {
-            Products products = new Products(2);
+            Products products = new Products(2, currentUser);
             products.Show();
             this.Close();
         }
 
         private void Bouquets_Click(object sender, MouseButtonEventArgs e)
         {
-            Products products = new Products(1);
+            Products products = new Products(1, currentUser);
             products.Show();
             this.Close();
         }
 
         private void IndoorPlants_Click(object sender, MouseButtonEventArgs e)
         {
-            Products products = new Products(3);
+            Products products = new Products(3, currentUser);
             products.Show();
             this.Close();
         }
 
         private void Seedlings_Click(object sender, MouseButtonEventArgs e)
         {
-            Products products = new Products(4);
+            Products products = new Products(4, currentUser);
             products.Show();
             this.Close();
         }
 
         private void CartButton_Click(object sender, RoutedEventArgs e)
         {
-            // Navigate to Cart page
+
         }
 
         private void Category_MouseEnter(object sender, MouseEventArgs e)
@@ -96,5 +99,7 @@ namespace flower
             var border = sender as Border;
             border.Background = new SolidColorBrush(Colors.Transparent);
         }
+
+        
     }
 }

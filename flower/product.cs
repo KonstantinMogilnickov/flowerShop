@@ -18,6 +18,7 @@ namespace flower
         public product()
         {
             this.carts = new HashSet<cart>();
+            this.product_in_order = new HashSet<product_in_order>();
         }
     
         public int id { get; set; }
@@ -29,5 +30,7 @@ namespace flower
         public virtual category category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cart> carts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<product_in_order> product_in_order { get; set; }
     }
 }

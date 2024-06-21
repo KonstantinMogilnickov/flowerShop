@@ -20,6 +20,11 @@
         <EntityTypeShape EntityType="shopModel.cart" Width="1.5" PointX="9.625" PointY="9" />
         <AssociationConnector Association="shopModel.FK_cart_clients" />
         <AssociationConnector Association="shopModel.FK_cart_product" />
+        <EntityTypeShape EntityType="shopModel.order" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="shopModel.product_in_order" Width="1.5" PointX="0.75" PointY="8.75" />
+        <AssociationConnector Association="shopModel.FK_order_Users" />
+        <AssociationConnector Association="shopModel.FK_product_in_order_order" />
+        <AssociationConnector Association="shopModel.FK_product_in_order_product" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

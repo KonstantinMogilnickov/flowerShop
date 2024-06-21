@@ -228,7 +228,10 @@ namespace flower
 
         private void CheckoutButton_Click(object sender, RoutedEventArgs e)
         {
-            // Navigate to checkout page
+            decimal totalAmount = (decimal)cartItems.Sum(i => i.Product.price * i.Quantity);
+            OrderPage orderPage = new OrderPage(cartItems, currentUser, totalAmount);
+            orderPage.Show();
+            this.Close();
         }
 
         private void LoadCartFromDatabase()

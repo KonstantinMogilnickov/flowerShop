@@ -49,6 +49,15 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_user" Type="int" />
+          <Property Name="amount" Type="int" />
+          <Property Name="quantity" Type="int" />
+        </EntityType>
         <EntityType Name="product">
           <Key>
             <PropertyRef Name="id" />
@@ -58,6 +67,16 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="imagepath" Type="nvarchar(max)" />
           <Property Name="id_category" Type="int" />
+        </EntityType>
+        <EntityType Name="product_in_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_order" Type="int" />
+          <Property Name="id_product" Type="int" />
+          <Property Name="quantity" Type="int" />
+          <Property Name="price" Type="int" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -125,6 +144,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_order_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_product_category">
           <End Role="category" Type="Self.category" Multiplicity="0..1" />
           <End Role="product" Type="Self.product" Multiplicity="*" />
@@ -134,6 +165,30 @@
             </Principal>
             <Dependent Role="product">
               <PropertyRef Name="id_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_product_in_order_order">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="product_in_order" Type="Self.product_in_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product_in_order">
+              <PropertyRef Name="id_order" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_product_in_order_product">
+          <End Role="product" Type="Self.product" Multiplicity="0..1" />
+          <End Role="product_in_order" Type="Self.product_in_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product_in_order">
+              <PropertyRef Name="id_product" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -209,7 +264,9 @@
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="clients" EntityType="Self.clients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="division" EntityType="Self.division" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product_in_order" EntityType="Self.product_in_order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -222,9 +279,21 @@
             <End Role="product" EntitySet="product" />
             <End Role="cart" EntitySet="cart" />
           </AssociationSet>
+          <AssociationSet Name="FK_order_Users" Association="Self.FK_order_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
           <AssociationSet Name="FK_product_category" Association="Self.FK_product_category">
             <End Role="category" EntitySet="category" />
             <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_product_in_order_order" Association="Self.FK_product_in_order_order">
+            <End Role="order" EntitySet="order" />
+            <End Role="product_in_order" EntitySet="product_in_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_product_in_order_product" Association="Self.FK_product_in_order_product">
+            <End Role="product" EntitySet="product" />
+            <End Role="product_in_order" EntitySet="product_in_order" />
           </AssociationSet>
           <AssociationSet Name="FK_Session_Users" Association="Self.FK_Session_Users">
             <End Role="Users" EntitySet="Users" />
@@ -288,6 +357,7 @@
           <NavigationProperty Name="division" Relationship="Self.FK_Users_division" FromRole="Users" ToRole="division" />
           <NavigationProperty Name="role" Relationship="Self.FK_Users_role" FromRole="Users" ToRole="role" />
           <NavigationProperty Name="Sessions" Relationship="shopModel.FK_Session_Users" FromRole="User" ToRole="Session" />
+          <NavigationProperty Name="orders" Relationship="shopModel.FK_order_Users" FromRole="User" ToRole="order" />
         </EntityType>
         <Association Name="FK_Users_division">
           <End Role="division" Type="Self.division" Multiplicity="0..1" />
@@ -377,6 +447,20 @@
             <End Role="product" EntitySet="products" />
             <End Role="cart" EntitySet="carts" />
           </AssociationSet>
+          <EntitySet Name="orders" EntityType="shopModel.order" />
+          <EntitySet Name="product_in_order" EntityType="shopModel.product_in_order" />
+          <AssociationSet Name="FK_order_Users" Association="shopModel.FK_order_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_product_in_order_order" Association="shopModel.FK_product_in_order_order">
+            <End Role="order" EntitySet="orders" />
+            <End Role="product_in_order" EntitySet="product_in_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_product_in_order_product" Association="shopModel.FK_product_in_order_product">
+            <End Role="product" EntitySet="products" />
+            <End Role="product_in_order" EntitySet="product_in_order" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -442,6 +526,7 @@
           <Property Name="id_category" Type="Int32" />
           <NavigationProperty Name="category" Relationship="shopModel.FK_product_category" FromRole="product" ToRole="category" />
           <NavigationProperty Name="carts" Relationship="shopModel.FK_cart_product" FromRole="product" ToRole="cart" />
+          <NavigationProperty Name="product_in_order" Relationship="shopModel.FK_product_in_order_product" FromRole="product" ToRole="product_in_order" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -495,6 +580,65 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="cart">
+              <PropertyRef Name="id_product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_user" Type="Int32" />
+          <Property Name="amount" Type="Int32" />
+          <Property Name="quantity" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="shopModel.FK_order_Users" FromRole="order" ToRole="User" />
+          <NavigationProperty Name="product_in_order" Relationship="shopModel.FK_product_in_order_order" FromRole="order" ToRole="product_in_order" />
+        </EntityType>
+        <EntityType Name="product_in_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_order" Type="Int32" />
+          <Property Name="id_product" Type="Int32" />
+          <Property Name="quantity" Type="Int32" />
+          <Property Name="price" Type="Int32" />
+          <NavigationProperty Name="order" Relationship="shopModel.FK_product_in_order_order" FromRole="product_in_order" ToRole="order" />
+          <NavigationProperty Name="product" Relationship="shopModel.FK_product_in_order_product" FromRole="product_in_order" ToRole="product" />
+        </EntityType>
+        <Association Name="FK_order_Users">
+          <End Type="shopModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="shopModel.order" Role="order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_product_in_order_order">
+          <End Type="shopModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="shopModel.product_in_order" Role="product_in_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product_in_order">
+              <PropertyRef Name="id_order" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_product_in_order_product">
+          <End Type="shopModel.product" Role="product" Multiplicity="0..1" />
+          <End Type="shopModel.product_in_order" Role="product_in_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product_in_order">
               <PropertyRef Name="id_product" />
             </Dependent>
           </ReferentialConstraint>
@@ -630,6 +774,27 @@
                 <ScalarProperty Name="amount" ColumnName="amount" />
                 <ScalarProperty Name="id_product" ColumnName="id_product" />
                 <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="shopModel.order">
+              <MappingFragment StoreEntitySet="order">
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="product_in_order">
+            <EntityTypeMapping TypeName="shopModel.product_in_order">
+              <MappingFragment StoreEntitySet="product_in_order">
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="id_product" ColumnName="id_product" />
+                <ScalarProperty Name="id_order" ColumnName="id_order" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
